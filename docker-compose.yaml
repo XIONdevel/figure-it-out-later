@@ -1,0 +1,41 @@
+﻿#     NOT TESTED YET
+services:
+  postgres:   #database
+    image: postgres
+    restart: always
+    shm_size: 128mb  #memory limit
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  adminer:   #database
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8081"
+
+  front-end-server:   #node + vue
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production  #idk WTF
+    networks:
+      - docker-network
+
+  back-end-server:  #spring boot
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xmx512m  #RAM limit
+    networks:
+      - docker-network
+
+networks:
+  docker-network:
+    driver: bridge
