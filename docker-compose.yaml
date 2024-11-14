@@ -1,0 +1,47 @@
+﻿#     NOT TESTED YET
+services:
+  postgres: #database
+    image: postgres:13
+    restart: always
+    shm_size: 128mb  #memory limit
+    environment:
+      POSTGRES_DB: placeholder #TODO: add an actual db name
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  adminer: #database
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8081"
+
+  back-end-server: #spring boot
+    build:
+      context: ./back-end
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/placeholder #TODO: add an actual db name
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    networks:
+      - docker-network
+
+  front-end-server: #node + vue
+    build:
+      context: ./front-end
+    depends_on:
+      - back-end-server
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production  #idk WTF
+    networks:
+      - docker-network
+networks:
+  docker-network:
+    driver: bridge
