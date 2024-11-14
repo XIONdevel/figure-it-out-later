@@ -1,0 +1,6 @@
+﻿# Force LF endings for all files
+* text=auto eol=lf
+
+# Override for specific files if needed
+*.bat eol=crlf
+*.sh eol=lf
