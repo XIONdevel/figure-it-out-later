@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+
+
+logging:
+  level:
+    root: info
+    com.noix.api: debug
+
+app:
+  security: #TODO: modify before use
+    secret: lfQuJL/ZkLwIDR28cNTbrzuWoZVtcW6v+5lAa/5esAFmx3p5M2VkeSsyEwWXXEuBCe9YZsoS/d5zaxsEXI/t4w== # HS512
+    expiration: 2419200000 # 28 days
